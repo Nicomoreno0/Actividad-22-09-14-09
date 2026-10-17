@@ -1,0 +1,264 @@
+openapi: 3.0.3
+info:
+  title: Sistema de Gestión de Órdenes - API
+  version: 2.0.0
+  description: Plataforma de comercio electrónico con autenticación JWT, gestión de inventario y procesamiento de pedidos en tiempo real.
+servers:
+  - url: http://localhost:3000
+    description: Entorno de desarrollo local
+paths:
+  /api/auth/registro:
+    post:
+      summary: Crear cuenta de usuario
+      tags: [Gestión de Usuarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nombre, email, password]
+              properties:
+                nombre:
+                  type: string
+                  example: Nicolas
+                email:
+                  type: string
+                  example: nicolas.moreno@empresa.com
+                password:
+                  type: string
+                  example: NicoPass123!
+                rol:
+                  type: string
+                  example: USER
+      responses:
+        '201':
+          description: Usuario registrado exitosamente
+        '400':
+          description: Datos inválidos o email ya existente
+
+  /api/auth/login:
+    post:
+      summary: Autenticar usuario y obtener tokens
+      tags: [Gestión de Usuarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  example: nicolas.moreno@empresa.com
+                password:
+                  type: string
+                  example: NicoPass123!
+      responses:
+        '200':
+          description: Inicio de sesión exitoso
+        '401':
+          description: Credenciales inválidas
+
+  /api/auth/refresh:
+    post:
+      summary: Refrescar token de acceso
+      tags: [Gestión de Usuarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        '200':
+          description: Token renovado
+
+  /api/v1/productos:
+    get:
+      summary: Consultar catálogo de productos
+      tags: [Inventario]
+      parameters:
+        - in: query
+          name: nombre
+          schema:
+            type: string
+          example: Teclado
+      responses:
+        '200':
+          description: Lista de productos
+    post:
+      summary: Agregar nuevo producto al catálogo
+      tags: [Inventario]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nombre, precio]
+              properties:
+                nombre:
+                  type: string
+                  example: Monitor Gamer 27"
+                precio:
+                  type: number
+                  example: 150000
+                stock:
+                  type: integer
+                  example: 25
+      responses:
+        '201':
+          description: Producto creado
+        '422':
+          description: Datos inválidos
+
+  /api/v1/productos/{id}:
+    get:
+      summary: Consultar detalles de un producto
+      tags: [Inventario]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Producto encontrado
+        '404':
+          description: No encontrado
+    put:
+      summary: Modificar información de producto
+      tags: [Inventario]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                precio:
+                  type: number
+                  example: 120000
+      responses:
+        '200':
+          description: Producto actualizado
+    delete:
+      summary: Remover producto del catálogo
+      tags: [Inventario]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Eliminado
+
+  /api/v1/categorias:
+    get:
+      summary: Ver todas las categorías disponibles
+      tags: [Clasificación]
+      responses:
+        '200':
+          description: Lista de categorías
+    post:
+      summary: Registrar nueva categoría
+      tags: [Clasificación]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  example: Hardware
+      responses:
+        '201':
+          description: Categoría creada
+        '409':
+          description: Ya existe
+
+  /api/pedidos:
+    post:
+      summary: Procesar orden de compra
+      tags: [Ventas]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+      responses:
+        '201':
+          description: Pedido procesado exitosamente
+        '400':
+          description: Datos inválidos
+        '401':
+          description: Sin token
+        '422':
+          description: Stock insuficiente
+
+  /api/pedidos/{id}:
+    get:
+      summary: Consultar estado de orden
+      tags: [Ventas]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalle del pedido
+        '403':
+          description: No es el dueño
+        '404':
+          description: No encontrado
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ProductoComprado:
+      type: object
+      required: [productoId, cantidad]
+      properties:
+        productoId:
+          type: integer
+          example: 1
+        cantidad:
+          type: integer
+          example: 2
+    CheckoutRequest:
+      type: object
+      required: [productosComprados]
+      properties:
+        usuarioId:
+          type: integer
+          example: 1
+        productosComprados:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductoComprado'

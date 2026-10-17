@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id             Int             @id @default(autoincrement())
+  nombre         String
+  email          String          @unique
+  password       String
+  rol            String          @default("USER")
+  pedidos        Pedido[]
+  refreshTokens  RefreshToken[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  usuarioId Int
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Categoria {
+  id        Int        @id @default(autoincrement())
+  nombre    String     @unique
+  productos Producto[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Producto {
+  id          Int             @id @default(autoincrement())
+  nombre      String
+  precio      Float
+  stock       Int             @default(0)
+  categoriaId Int?
+  categoria   Categoria?      @relation(fields: [categoriaId], references: [id])
+  detalles    DetallePedido[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Pedido {
+  id        Int             @id @default(autoincrement())
+  usuarioId Int
+  usuario   Usuario         @relation(fields: [usuarioId], references: [id])
+  total     Float
+  estado    String          @default("FINALIZADO")
+  detalles  DetallePedido[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model DetallePedido {
+  id             Int      @id @default(autoincrement())
+  pedidoId       Int
+  pedido         Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  productoId     Int
+  producto       Producto @relation(fields: [productoId], references: [id])
+  cantidad       Int
+  precioUnitario Float
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

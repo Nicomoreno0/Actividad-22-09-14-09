@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+.env
+*.db
+*.db-journal
+prisma/*.db
+.idea/
+.vscode/
+npm-debug.log*
