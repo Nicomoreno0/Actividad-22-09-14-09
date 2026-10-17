@@ -11,14 +11,14 @@ describe('Pruebas de Endpoints - API Productos (/api/v1/productos)', () => {
 
   it('Debe crear un recurso con datos válidos (201)', async () => {
     const res = await request(app).post('/api/v1/productos').send({
-      nombre: 'Teclado Mecánico',
-      precio: 45000
+      nombre: 'Monitor Gamer 27"',
+      precio: 150000
     });
 
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty('id');
-    expect(res.body.nombre).toBe('Teclado Mecánico');
-    expect(res.body.precio).toBe(45000);
+    expect(res.body.nombre).toBe('Monitor Gamer 27"');
+    expect(res.body.precio).toBe(150000);
     productoCreadoId = res.body.id;
   });
 
@@ -32,7 +32,7 @@ describe('Pruebas de Endpoints - API Productos (/api/v1/productos)', () => {
     const res = await request(app).get(`/api/v1/productos/${productoCreadoId}`);
     expect(res.status).toBe(200);
     expect(res.body.id).toBe(productoCreadoId);
-    expect(res.body.nombre).toBe('Teclado Mecánico');
+    expect(res.body.nombre).toBe('Monitor Gamer 27"');
   });
 
   it('Debe retornar 404 al consultar un ID que no existe en la BBDD', async () => {
@@ -48,21 +48,21 @@ describe('Pruebas de Endpoints - API Productos (/api/v1/productos)', () => {
   });
 
   it('Debe retornar solo los elementos coincidentes al aplicar un filtro por query param', async () => {
-    await request(app).post('/api/v1/productos').send({ nombre: 'Mouse Inalámbrico', precio: 25000 });
-    const res = await request(app).get('/api/v1/productos?nombre=Teclado');
+    await request(app).post('/api/v1/productos').send({ nombre: 'Teclado Bluetooth', precio: 35000 });
+    const res = await request(app).get('/api/v1/productos?nombre=Monitor');
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.length).toBe(1);
-    expect(res.body[0].nombre).toBe('Teclado Mecánico');
+    expect(res.body[0].nombre).toBe('Monitor Gamer 27"');
   });
 
   it('Debe retornar 200 y el recurso modificado al actualizar un campo válido', async () => {
     const res = await request(app)
       .put(`/api/v1/productos/${productoCreadoId}`)
-      .send({ precio: 48000 });
+      .send({ precio: 145000 });
     expect(res.status).toBe(200);
-    expect(res.body.precio).toBe(48000);
-    expect(res.body.nombre).toBe('Teclado Mecánico');
+    expect(res.body.precio).toBe(145000);
+    expect(res.body.nombre).toBe('Monitor Gamer 27"');
   });
 
   it('Debe retornar 204 (No Content) al eliminar un recurso existente', async () => {

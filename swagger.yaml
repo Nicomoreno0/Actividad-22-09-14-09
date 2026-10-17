@@ -87,7 +87,7 @@ paths:
           name: nombre
           schema:
             type: string
-          example: Teclado
+          example: Monitor
       responses:
         '200':
           description: Lista de productos

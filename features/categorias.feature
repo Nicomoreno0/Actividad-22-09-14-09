@@ -9,24 +9,24 @@ Característica: Gestión de categorías
     Cuando envío una solicitud POST a "/api/v1/categorias" con el cuerpo:
       """
       {
-        "nombre": "Periféricos"
+        "nombre": "Hardware"
       }
       """
     Entonces el código de respuesta debe ser 201
-    Y el campo "nombre" debe ser "Periféricos"
+    Y el campo "nombre" debe ser "Hardware"
 
   Escenario: Crear categoría duplicada
     Dado que la base de datos está limpia
     Cuando envío una solicitud POST a "/api/v1/categorias" con el cuerpo:
       """
       {
-        "nombre": "Periféricos"
+        "nombre": "Hardware"
       }
       """
     Y envío una solicitud POST a "/api/v1/categorias" con el cuerpo:
       """
       {
-        "nombre": "Periféricos"
+        "nombre": "Hardware"
       }
       """
     Entonces el código de respuesta debe ser 409

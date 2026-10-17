@@ -21,7 +21,7 @@ Característica: Seguridad de pedidos
     Dado que la base de datos está limpia
     Y que existe un usuario registrado con email "dueno@ejemplo.com"
     Y que existe un usuario registrado con email "otro@ejemplo.com"
-    Y que existe un producto con nombre "Mouse" precio 10000 y stock 3
+    Y que existe un producto con nombre "Cámara Web" precio 12000 y stock 5
     Y que inicié sesión con email "dueno@ejemplo.com" y contraseña "Password123!"
     Y que creé un pedido autenticado del producto guardado con cantidad 1
     Y que inicié sesión con email "otro@ejemplo.com" y contraseña "Password123!"

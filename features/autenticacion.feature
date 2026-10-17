@@ -6,12 +6,12 @@ Característica: Autenticación JWT
 
   Escenario: Login exitoso
     Dado que la base de datos está limpia
-    Y que existe un usuario registrado con email "faabri@ejemplo.com"
+    Y que existe un usuario registrado con email "nicolas.moreno@empresa.com"
     Cuando envío una solicitud POST a "/api/auth/login" con el cuerpo:
       """
       {
-        "email": "faabri@ejemplo.com",
-        "password": "Password123!"
+        "email": "nicolas.moreno@empresa.com",
+        "password": "NicoPass123!"
       }
       """
     Entonces el código de respuesta debe ser 200
@@ -19,11 +19,11 @@ Característica: Autenticación JWT
 
   Escenario: Login con contraseña incorrecta
     Dado que la base de datos está limpia
-    Y que existe un usuario registrado con email "faabri@ejemplo.com"
+    Y que existe un usuario registrado con email "nicolas.moreno@empresa.com"
     Cuando envío una solicitud POST a "/api/auth/login" con el cuerpo:
       """
       {
-        "email": "faabri@ejemplo.com",
+        "email": "nicolas.moreno@empresa.com",
         "password": "clave-incorrecta"
       }
       """

@@ -32,7 +32,7 @@ Criterios de aceptación:
 **Como** comprador, **quiero** filtrar productos por nombre **para** encontrar un artículo rápido.
 
 Criterios de aceptación:
-1. `GET /api/v1/productos?nombre=Teclado` responde `200` con un array.
+1. `GET /api/v1/productos?nombre=Monitor` responde `200` con un array.
 2. Solo se incluyen coincidencias del filtro.
 3. Sin filtro se listan todos.
 

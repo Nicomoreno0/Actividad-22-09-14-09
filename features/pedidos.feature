@@ -6,9 +6,9 @@ Característica: Checkout de pedidos
 
   Escenario: Pedido exitoso con stock suficiente
     Dado que la base de datos está limpia
-    Y que existe un usuario registrado con email "faabri@ejemplo.com"
-    Y que existe un producto con nombre "Teclado Mecánico" precio 45000 y stock 5
-    Y que inicié sesión con email "faabri@ejemplo.com" y contraseña "Password123!"
+    Y que existe un usuario registrado con email "nicolas.moreno@empresa.com"
+    Y que existe un producto con nombre "Auriculares Bluetooth" precio 800 y stock 15
+    Y que inicié sesión con email "nicolas.moreno@empresa.com" y contraseña "NicoPass123!"
     Cuando envío una solicitud autenticada POST a "/api/pedidos" con el cuerpo:
       """
       {
@@ -23,9 +23,9 @@ Característica: Checkout de pedidos
 
   Escenario: Pedido rechazado por stock insuficiente
     Dado que la base de datos está limpia
-    Y que existe un usuario registrado con email "faabri@ejemplo.com"
-    Y que existe un producto con nombre "Monitor 4K" precio 120000 y stock 1
-    Y que inicié sesión con email "faabri@ejemplo.com" y contraseña "Password123!"
+    Y que existe un usuario registrado con email "nicolas.moreno@empresa.com"
+    Y que existe un producto con nombre "Mouse Inalámbrico" precio 450 y stock 3
+    Y que inicié sesión con email "nicolas.moreno@empresa.com" y contraseña "NicoPass123!"
     Cuando envío una solicitud autenticada POST a "/api/pedidos" con el cuerpo:
       """
       {

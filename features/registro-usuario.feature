@@ -9,9 +9,9 @@ Característica: Registro de usuarios
     Cuando envío una solicitud POST a "/api/auth/registro" con el cuerpo:
       """
       {
-        "nombre": "Faabri",
-        "email": "faabri@ejemplo.com",
-        "password": "Password123!"
+        "nombre": "Nicolas",
+        "email": "nicolas.moreno@empresa.com",
+        "password": "NicoPass123!"
       }
       """
     Entonces el código de respuesta debe ser 201
@@ -19,13 +19,13 @@ Característica: Registro de usuarios
 
   Escenario: Registro con email duplicado
     Dado que la base de datos está limpia
-    Y que existe un usuario registrado con email "faabri@ejemplo.com"
+    Y que existe un usuario registrado con email "nicolas.moreno@empresa.com"
     Cuando envío una solicitud POST a "/api/auth/registro" con el cuerpo:
       """
       {
-        "nombre": "Otro",
-        "email": "faabri@ejemplo.com",
-        "password": "Password123!"
+        "nombre": "Carlos",
+        "email": "nicolas.moreno@empresa.com",
+        "password": "NicoPass123!"
       }
       """
     Entonces el código de respuesta debe ser 400
